@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "One-Time Passwords",
@@ -16,9 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <Toaster position="bottom-center" />
-
-        {children}
+        <Toaster position="bottom-center" toastOptions={{
+          style: {
+            background: "#222222",
+            color: "#d1d5db",
+          }
+        }} />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

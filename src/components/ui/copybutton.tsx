@@ -11,12 +11,16 @@ export default function CopyButton({
   className?: string;
 }) {
   return (
-    <Copy
-      className={className}
+    <button
+      className={`${className}`}
       onClick={async () => {
         await navigator.clipboard.writeText(code);
-        toast.success("Copied to clipboard!");
+        toast.success("Copied to clipboard!", {
+          position: "top-center",
+        });
       }}
-    ></Copy>
+    >
+      <Copy />
+    </button>
   );
 }

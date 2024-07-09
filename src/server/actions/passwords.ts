@@ -1,7 +1,7 @@
 "use server";
 
 // create a password for a given user
-export async function createCode(): Promise<{ code: string }> {
+export async function generateCode(): Promise<{ code: string }> {
   const length = 4;
 
   // create a random code of the integers
@@ -12,4 +12,9 @@ export async function createCode(): Promise<{ code: string }> {
   return {
     code,
   };
+}
+
+export async function saveCode(): Promise<void> {
+  // save the code to the database TODO
+  return;
 }

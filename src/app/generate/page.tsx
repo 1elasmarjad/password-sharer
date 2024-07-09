@@ -1,14 +1,15 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { CircleCheckBig, RefreshCw } from "lucide-react";
+import { CircleCheckBig, LoaderCircle, RefreshCw } from "lucide-react";
+import toast from "react-hot-toast";
 import CopyButton from "~/components/ui/copybutton";
-import { createCode } from "~/server/actions/passwords";
+import { generateCode } from "~/server/actions/passwords";
 
 export default function GeneratePage() {
-  const { data } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: ["generateCode"],
-    queryFn: createCode,
+    queryFn: async () => await generateCode(),
   });
 
   return (
@@ -18,16 +19,33 @@ export default function GeneratePage() {
           Your One-Time Password
         </p>
         <div className="flex items-end gap-2">
-          <h1 className="pt-3 text-8xl font-bold text-[#3a9aed]">
-            {data?.code}
-          </h1>
-          <CopyButton
-            className="mb-2 text-gray-400 hover:cursor-pointer"
-            code={data?.code ?? ""}
-          />
+          {!isLoading ? (
+            <>
+              <h1 className="pt-3 text-8xl font-bold text-[#3a9aed]">
+                {data?.code}
+              </h1>
+              <CopyButton
+                className="mb-2 text-gray-400 hover:text-gray-200 transition-all" 
+                code={data?.code ?? ""}
+              />
+            </>
+          ) : (
+            <div className="pt-4">
+              <LoaderCircle className="h-12 w-12 animate-spin text-[#3a9aed]" />
+            </div>
+          )}
         </div>
 
-        <button className="group mt-8 flex w-full items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 text-lg tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700">
+        <button
+          className="group mt-8 flex w-full items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 text-lg tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700"
+          disabled={isLoading}
+          onClick={async () => {
+            await refetch();
+            toast.success("New password generated!", {
+              position: "top-center"
+            })
+          }}
+        >
           Regenerate
           <RefreshCw className="h-4 w-4 group-hover:animate-spin" />
         </button>
