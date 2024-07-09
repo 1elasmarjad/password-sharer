@@ -6,20 +6,6 @@ export default function HomePage() {
 
   return (
     <main className="flex min-h-screen flex-col">
-      <div>
-
-        <h3>Who is this for?</h3>
-        <Combobox
-          selectMessage="Select a user..."
-          options={[
-            {
-              value: "next.js",
-              label: "Next.js",
-            },
-          ]}
-        />
-      </div>
-
       <>{code}</>
     </main>
   );
