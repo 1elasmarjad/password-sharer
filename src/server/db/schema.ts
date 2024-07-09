@@ -2,7 +2,7 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -10,29 +10,11 @@ import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = sqliteTableCreator(
-  (name) => `password-sharer_${name}`,
-);
-
-export const posts = createTable(
-  "post",
-  {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }),
-    createdAt: int("created_at", { mode: "timestamp" })
-      .default(sql`(unixepoch())`)
-      .notNull(),
-    updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-      () => new Date(),
-    ),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
+export const createTable = sqliteTableCreator((name) => `${name}`);
 
 export const users = createTable("user", {
   id: text("id").notNull(),
+  discordId: text("discord_id"),
   name: text("name", { length: 256 }).notNull(),
   createdAt: int("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
@@ -40,4 +22,18 @@ export const users = createTable("user", {
   updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
     () => new Date(),
   ),
+});
+
+export const sessions = createTable("session", {
+  id: text("id").notNull().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  expiresAt: int("expires_at").notNull(),
+});
+
+export const oauthState = createTable("oauth_state", {
+  state: text("state").notNull().primaryKey(),
+  provider: text("provider").notNull(),
+  destinationUri: text("destination_uri").notNull(),
 });

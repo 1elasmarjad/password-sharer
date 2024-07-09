@@ -10,5 +10,4 @@ export default {
     url: env.DATABASE_URL,
     authToken: env.TURSO_AUTH_TOKEN
   },
-  tablesFilter: ["password-sharer_*"],
 } satisfies Config;

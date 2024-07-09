@@ -1,8 +1,10 @@
 import { createClient, type Client } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
+import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 
 import { env } from "~/env";
 import * as schema from "./schema";
+import { sessions, users } from "./schema";
 
 /**
  * Cache the database connection in development. This avoids creating a new connection on every HMR
@@ -18,3 +20,5 @@ export const client =
 if (env.NODE_ENV !== "production") globalForDb.client = client;
 
 export const db = drizzle(client, { schema });
+
+export const luciaAdapter = new DrizzleSQLiteAdapter(db, sessions, users);

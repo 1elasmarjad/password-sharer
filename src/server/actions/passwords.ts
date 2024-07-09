@@ -1,8 +1,10 @@
 "use server";
 
 // create a password for a given user
-export async function generateCode(): Promise<{ code: string }> {
-  const length = 4;
+export async function generateCode(length?: number): Promise<{ code: string }> {
+  if (!length) {
+    length = 4;
+  }
 
   // create a random code of the integers
   const code = Array.from({ length }, () =>
