@@ -16,7 +16,7 @@ export default function CopyButton({
       onClick={async () => {
         await navigator.clipboard.writeText(code);
         toast.success("Copied to clipboard!", {
-          position: "top-center",
+          position: "bottom-center",
         });
       }}
     >

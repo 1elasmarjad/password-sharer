@@ -16,6 +16,7 @@ export const users = createTable("user", {
   id: text("id").notNull(),
   discordId: text("discord_id"),
   name: text("name", { length: 256 }).notNull(),
+  avatar: text("avatar"),
   createdAt: int("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),

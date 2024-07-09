@@ -1,11 +1,12 @@
 import Link from "next/link";
-import Combobox from "~/components/ui/combobox";
-import { generateCode } from "~/server/actions/passwords";
+import SectionLayout from "~/components/ui/sectionlayout";
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col">
-      <Link href="/login/discord">Test</Link>
+    <main className="flex flex-col">
+      <SectionLayout>
+        <Link href="/login/discord">Test</Link>
+      </SectionLayout>
     </main>
   );
 }

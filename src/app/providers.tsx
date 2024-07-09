@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -43,6 +44,17 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <>
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          style: {
+            background: "#222222",
+            color: "#d1d5db",
+          },
+        }}
+      />
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </>
   );
 }

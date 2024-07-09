@@ -31,8 +31,7 @@ export async function GET(request: Request): Promise<Response> {
     },
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const discordUser: DiscordUser = await discordUserResponse.json();
+  const discordUser = await discordUserResponse.json() as DiscordUser;
 
   console.log("Fetched discord user", discordUser);
 
@@ -53,6 +52,7 @@ export async function GET(request: Request): Promise<Response> {
       id: userId,
       discordId: discordUser.id,
       name: discordUser.username,
+      avatar: discordUser.avatar? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}` : null,
     });
   }
 
