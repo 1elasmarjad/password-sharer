@@ -10,11 +10,47 @@ export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
+  const error = url.searchParams.get("error");
+
+  if (!state) {
+    console.error("No state", { code, state, error });
+    return new Response(null, {
+      status: 400,
+    });
+  }
+
+  // get database state data
+  const dbStateData = await db.query.oauthState.findFirst({
+    where: eq(oauthState.state, state),
+  });
+
+  const destinationUri = dbStateData?.destinationUri ?? "/";
+
+  if (error) {
+    console.error("Error from discord", error);
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: destinationUri,
+      },
+    });
+  }
 
   const storedState = cookies().get("discord_oauth_state")?.value ?? null;
   if (!code || !state || !storedState || state !== storedState) {
+    console.error("Invalid state or code", { code, state, storedState });
     return new Response(null, {
       status: 400,
+    });
+  }
+
+  if (error) {
+    console.error("Error from discord", error);
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: destinationUri,
+      },
     });
   }
 
@@ -31,7 +67,7 @@ export async function GET(request: Request): Promise<Response> {
     },
   );
 
-  const discordUser = await discordUserResponse.json() as DiscordUser;
+  const discordUser = (await discordUserResponse.json()) as DiscordUser;
 
   console.log("Fetched discord user", discordUser);
 
@@ -52,7 +88,9 @@ export async function GET(request: Request): Promise<Response> {
       id: userId,
       discordId: discordUser.id,
       name: discordUser.username,
-      avatar: discordUser.avatar? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}` : null,
+      avatar: discordUser.avatar
+        ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}`
+        : null,
     });
   }
 
@@ -66,13 +104,6 @@ export async function GET(request: Request): Promise<Response> {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-
-  // get database state data
-  const dbStateData = await db.query.oauthState.findFirst({
-    where: eq(oauthState.state, state),
-  });
-
-  const destinationUri = dbStateData?.destinationUri ?? "/";
 
   return new Response(null, {
     status: 302,

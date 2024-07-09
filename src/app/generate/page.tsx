@@ -12,11 +12,11 @@ export default async function GeneratePage() {
     <main className="flex flex-col items-center">
       {authContext.user ? (
         <>
-          <h1 className="text-gray-200 text-xl my-12">Welcome {authContext.user.name}!</h1>
+          <h1 className="text-gray-200 text-xl my-12">Welcome {authContext.user.name}</h1>
           <OTPBlock authContext={authContext} />
         </>
       ) : (
-        <div className="flex flex-col items-center gap-4 bg-[#222222] px-16 py-12">
+        <div className="flex flex-col items-center gap-4 bg-[#222222] px-16 py-12 my-12 rounded">
           <h1 className="text-xl text-gray-400">You Must Login</h1>
 
           <Link

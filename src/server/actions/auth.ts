@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 import type { Session, User } from "lucia";
 import { lucia } from "~/auth";
+import { ActionResult } from "next/dist/server/app-render/types";
 
 export type AuthContext = {
   user: User | null;
@@ -39,3 +40,30 @@ export const validateRequest = cache(async (): Promise<AuthContext> => {
   } catch {}
   return result;
 });
+
+export async function logout() {
+  "use server";
+
+  console.log("Logging out");
+
+  const { session } = await validateRequest();
+
+  if (!session) {
+    return {
+      error: "Unauthorized",
+    };
+  }
+
+  await lucia.invalidateSession(session.id);
+
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes,
+  );
+
+  return {
+    error: null,
+  };
+}

@@ -9,6 +9,14 @@ const config = {
   experimental: {
     serverComponentsExternalPackages: ["@node-rs/argon2"],
   },
+  images: {
+    remotePatterns: [{
+      protocol: "https",
+      hostname: "cdn.discordapp.com",
+      port: '',
+      pathname: "/avatars/**"
+    }],
+  },
 };
 
 export default config;
