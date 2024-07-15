@@ -15,6 +15,7 @@ export const createTable = sqliteTableCreator((name) => `${name}`);
 export const users = createTable("user", {
   id: text("id").notNull(),
   discordId: text("discord_id"),
+  email: text("email"),
   phoneNumber: text("phone_number"),
   name: text("name", { length: 256 }).notNull(),
   avatar: text("avatar"),
@@ -48,6 +49,7 @@ export const oauthStates = createTable("oauth_state", {
   state: text("state").notNull().primaryKey(),
   provider: text("provider").notNull(),
   destinationUri: text("destination_uri").notNull(),
+  codeVerifier: text("code_verifier"),
 });
 
 export const friends = createTable("friend", {
