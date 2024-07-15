@@ -5,13 +5,9 @@ import { CircleCheckBig, LoaderCircle, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 import CopyButton from "./copybutton";
 import { generateCode } from "~/server/actions/passwords";
-import { type AuthContext } from "~/server/actions/auth";
+import Link from "next/link";
 
-export default function OTPBlock({
-  authContext,
-}: {
-  authContext: AuthContext;
-}) {
+export default function OTPBlock() {
   const { data, refetch, isLoading } = useQuery({
     queryKey: ["generateCode"],
     queryFn: async () => await generateCode(),
@@ -19,13 +15,13 @@ export default function OTPBlock({
 
   return (
     <div className="flex flex-col items-center rounded-md bg-[#222222] px-16 py-12">
-      <p className="select-none text-lg sm:text-xl text-gray-400 text-center">
+      <p className="select-none text-center text-lg text-gray-400 sm:text-xl">
         Your One-Time Password
       </p>
       <div className="flex items-end gap-3">
         {!isLoading ? (
           <>
-            <h1 className="mt-3 text-5xl sm:text-8xl font-bold text-[#3a9aed]">
+            <h1 className="mt-3 text-5xl font-bold text-[#3a9aed] sm:text-8xl">
               {data?.code}
             </h1>
             <CopyButton
@@ -41,7 +37,7 @@ export default function OTPBlock({
       </div>
 
       <button
-        className="group mt-8 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 text-md sm:text-lg tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700"
+        className="text-md group mt-8 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
         disabled={isLoading}
         onClick={async () => {
           await refetch();
@@ -53,10 +49,13 @@ export default function OTPBlock({
         Regenerate
         <RefreshCw className="h-4 w-4 group-hover:animate-spin" />
       </button>
-      <button className="mt-6 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 text-md sm:text-lg tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700">
+      <Link
+        href={`/use?p=${data?.code}`}
+        className="text-md mt-6 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
+      >
         Use Password
         <CircleCheckBig className="h-4 w-4" />
-      </button>
+      </Link>
     </div>
   );
 }

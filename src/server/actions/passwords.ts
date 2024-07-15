@@ -1,7 +1,15 @@
 "use server";
 
+import { validateRequest } from "./auth";
+
 // create a password for a given user
 export async function generateCode(length?: number): Promise<{ code: string }> {
+  const { user } = await validateRequest();
+
+  if (!user) {
+    throw new Error("Not authenticated");
+  }
+
   if (!length) {
     length = 4;
   }

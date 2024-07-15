@@ -2,12 +2,22 @@ import { generateState } from "arctic";
 import { cookies } from "next/headers";
 import { discord } from "~/auth";
 import { db } from "~/server/db";
-import { oauthState } from "~/server/db/schema";
+import { oauthStates } from "~/server/db/schema";
 
 export async function GET(request: Request): Promise<Response> {
   // where this request came from so we can redirect back
-  const referer =
-    request.headers.get("referer") ?? request.headers.get("referrer") ?? "/";
+  const requestUrl = new URL(request.url);
+
+  let destination: string;
+
+  const destParam = requestUrl.searchParams.get("dest");
+
+  if (destParam && !destParam.startsWith("http")) {
+    destination = requestUrl.searchParams.get("dest")!;
+  } else {
+    destination =
+      request.headers.get("referer") ?? request.headers.get("referrer") ?? "/";
+  }
 
   const state = generateState();
   const url = await discord.createAuthorizationURL(state, {
@@ -22,10 +32,10 @@ export async function GET(request: Request): Promise<Response> {
     sameSite: "lax",
   });
 
-  await db.insert(oauthState).values({
+  await db.insert(oauthStates).values({
     state: state,
     provider: "discord",
-    destinationUri: referer,
+    destinationUri: destination,
   });
 
   return Response.redirect(url);

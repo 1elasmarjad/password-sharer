@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 import type { Session, User } from "lucia";
 import { lucia } from "~/auth";
-import { ActionResult } from "next/dist/server/app-render/types";
 
 export type AuthContext = {
   user: User | null;

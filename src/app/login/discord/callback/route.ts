@@ -4,7 +4,7 @@ import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { discord, lucia } from "~/auth";
 import { db } from "~/server/db";
-import { oauthState, users } from "~/server/db/schema";
+import { oauthStates, users } from "~/server/db/schema";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
@@ -20,8 +20,8 @@ export async function GET(request: Request): Promise<Response> {
   }
 
   // get database state data
-  const dbStateData = await db.query.oauthState.findFirst({
-    where: eq(oauthState.state, state),
+  const dbStateData = await db.query.oauthStates.findFirst({
+    where: eq(oauthStates.state, state),
   });
 
   const destinationUri = dbStateData?.destinationUri ?? "/";

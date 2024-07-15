@@ -3,6 +3,8 @@ import { Lucia } from "lucia";
 import { luciaAdapter } from "./server/db/index";
 import { Discord } from "arctic";
 import { env } from "./env";
+import { type users } from "./server/db/schema";
+import { type InferSelectModel } from "drizzle-orm";
 
 export const lucia = new Lucia(luciaAdapter, {
   sessionCookie: {
@@ -26,13 +28,8 @@ export const lucia = new Lucia(luciaAdapter, {
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
-    DatabaseUserAttributes: DatabaseUserAttributes;
+    DatabaseUserAttributes: InferSelectModel<typeof users>;
   }
-}
-
-interface DatabaseUserAttributes {
-  name: string;
-  avatar: string | null;
 }
 
 export const discord = new Discord(
