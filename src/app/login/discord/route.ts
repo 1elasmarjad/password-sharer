@@ -12,7 +12,7 @@ export async function GET(request: Request): Promise<Response> {
 
   const destParam = requestUrl.searchParams.get("dest");
 
-  if (destParam && !destParam.startsWith("http")) {
+  if (destParam && !destParam.startsWith("/")) {
     destination = requestUrl.searchParams.get("dest")!;
   } else {
     destination =

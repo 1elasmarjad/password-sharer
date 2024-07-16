@@ -48,6 +48,8 @@ export async function alertMyFriends({
 
   const friends = await getMyFriends();
 
+  console.log(`Alerting ${friends.length} friends`);
+
   for (const friend of friends) {
     if (!friend.friend.phoneNumber) {
       continue;

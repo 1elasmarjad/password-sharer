@@ -66,7 +66,7 @@ export default async function RootLayout({
                       )}
                     </>
                   ) : (
-                    <Link href="/login/discord" className="flex items-center justify-center gap-2 rounded border-2 border-gray-700 px-6 py-1.5 text-md tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700">Login</Link>
+                    <Link href="/login/google" className="flex items-center justify-center gap-2 rounded border-2 border-gray-700 px-6 py-1.5 text-md tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700">Login</Link>
                   )}
                 </div>
               </nav>

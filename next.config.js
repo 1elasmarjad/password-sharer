@@ -10,12 +10,20 @@ const config = {
     serverComponentsExternalPackages: ["@node-rs/argon2"],
   },
   images: {
-    remotePatterns: [{
-      protocol: "https",
-      hostname: "cdn.discordapp.com",
-      port: '',
-      pathname: "/avatars/**"
-    }],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+        port: "",
+        pathname: "/avatars/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

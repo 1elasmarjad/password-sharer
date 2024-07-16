@@ -2,7 +2,7 @@
 import { eq } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
-import { discord, google, lucia } from "~/auth";
+import { google, lucia } from "~/auth";
 import { db } from "~/server/db";
 import { oauthStates, users } from "~/server/db/schema";
 
@@ -86,16 +86,13 @@ export async function GET(request: Request): Promise<Response> {
     userId = generateIdFromEntropySize(10);
 
     console.log(`Creating new user with id ${userId}`);
-    throw new Error("Not implemented");
 
-  //   await db.insert(users).values({
-  //     id: userId,
-  //     email: googleUser.email,
-  //     name: googleUser.username,
-  //     avatar: discordUser.avatar
-  //       ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}`
-  //       : null,
-  //   });
+    await db.insert(users).values({
+      id: userId,
+      email: googleUser.email,
+      name: googleUser.given_name,
+      avatar: googleUser.picture,
+    });
   }
 
   // Create session
@@ -118,5 +115,11 @@ export async function GET(request: Request): Promise<Response> {
 }
 
 interface GoogleUser {
+  sub: string;
   email: string;
+  name: string;
+  given_name: string;
+  family_name: string;
+  picture: string;
+  email_verified: boolean;
 }

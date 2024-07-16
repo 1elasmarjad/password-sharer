@@ -3,7 +3,7 @@ import SectionLayout from "~/components/ui/sectionlayout";
 
 export default function HomePage() {
 
-  const customUrl = "/login/discord?dest=%5Ctesting"
+  const customUrl = "/login/google?dest=%5Ctesting"
 
   return (
     <main className="flex flex-col">

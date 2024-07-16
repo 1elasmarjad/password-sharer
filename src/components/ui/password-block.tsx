@@ -1,16 +1,36 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { CircleCheckBig, LoaderCircle, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 import CopyButton from "./copybutton";
-import { generateCode } from "~/server/actions/passwords";
+import { generateCode, saveCode } from "~/server/actions/passwords";
 import Link from "next/link";
 
 export default function OTPBlock() {
-  const { data, refetch, isLoading } = useQuery({
+  const {
+    data: codeData,
+    refetch: codeRefetch,
+    isLoading: codeIsLoading,
+  } = useQuery({
     queryKey: ["generateCode"],
     queryFn: async () => await generateCode(),
+  });
+
+  const { mutate: saveCodeMutate, isPending: saveCodeLoading } = useMutation({
+    mutationFn: async () => {
+      if (!codeData?.code) {
+        toast.error("No code to save", { position: "bottom-center" });
+        throw new Error("No code to save");
+      }
+
+      try {
+        await saveCode(codeData.code);
+        toast.success("Password saved!", { position: "bottom-center" });
+      } catch (e) {
+        toast.error("Failed to save password", { position: "bottom-center" });
+      }
+    },
   });
 
   return (
@@ -19,14 +39,14 @@ export default function OTPBlock() {
         Your One-Time Password
       </p>
       <div className="flex items-end gap-3">
-        {!isLoading ? (
+        {!codeIsLoading ? (
           <>
             <h1 className="mt-3 text-5xl font-bold text-[#3a9aed] sm:text-8xl">
-              {data?.code}
+              {codeData?.code}
             </h1>
             <CopyButton
               className="mb-2 select-none text-gray-400 transition-all hover:text-gray-200"
-              code={data?.code ?? ""}
+              code={codeData?.code ?? ""}
             />
           </>
         ) : (
@@ -38,9 +58,9 @@ export default function OTPBlock() {
 
       <button
         className="text-md group mt-8 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
-        disabled={isLoading}
+        disabled={codeIsLoading}
         onClick={async () => {
-          await refetch();
+          await codeRefetch();
           toast.success("New password generated!", {
             position: "bottom-center",
           });
@@ -49,13 +69,23 @@ export default function OTPBlock() {
         Regenerate
         <RefreshCw className="h-4 w-4 group-hover:animate-spin" />
       </button>
-      <Link
-        href={`/use?p=${data?.code}`}
+      <button
+        onClick={async () => {
+          saveCodeMutate();
+        }}
         className="text-md mt-6 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
       >
-        Use Password
-        <CircleCheckBig className="h-4 w-4" />
-      </Link>
+        {!saveCodeLoading && (
+          <>
+            Use Password
+            <CircleCheckBig className="h-4 w-4" />
+          </>
+        )}
+
+        {saveCodeLoading && (
+          <LoaderCircle className="h-6 w-6 animate-spin text-[#3a9aed]" />
+        )}
+      </button>
     </div>
   );
 }

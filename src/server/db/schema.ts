@@ -69,6 +69,17 @@ export const friendRelations = relations(friends, ({ one }) => ({
   }),
 }));
 
+export const codes = createTable("code", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return Math.random().toString(36).substring(2);
+    }),
+  userId: text("user_id").notNull(),
+  code: text("code").notNull(),
+});
+
 // export const friendsRelations = relations(friends, ({ one }) => ({
 //   user: one(users, {
 //     fields: [friends.userId],
