@@ -1,6 +1,5 @@
 "use server";
 
-import { ConsoleLogWriter } from "drizzle-orm";
 import { db } from "../db";
 import { codes } from "../db/schema";
 import { validateRequest } from "./auth";

@@ -1,13 +1,20 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CircleCheckBig, LoaderCircle, RefreshCw } from "lucide-react";
+import {
+  CircleCheckBig,
+  LoaderCircle,
+  PartyPopper,
+  RefreshCw,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import CopyButton from "./copybutton";
 import { generateCode, saveCode } from "~/server/actions/passwords";
-import Link from "next/link";
+import { useState } from "react";
 
 export default function OTPBlock() {
+  const [complete, setComplete] = useState<boolean>(false);
+
   const {
     data: codeData,
     refetch: codeRefetch,
@@ -27,6 +34,9 @@ export default function OTPBlock() {
       try {
         await saveCode(codeData.code);
         toast.success("Password saved!", { position: "bottom-center" });
+        setComplete(true);
+
+        // redirect to the use page
       } catch (e) {
         toast.error("Failed to save password", { position: "bottom-center" });
       }
@@ -56,36 +66,49 @@ export default function OTPBlock() {
         )}
       </div>
 
-      <button
-        className="text-md group mt-8 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
-        disabled={codeIsLoading}
-        onClick={async () => {
-          await codeRefetch();
-          toast.success("New password generated!", {
-            position: "bottom-center",
-          });
-        }}
-      >
-        Regenerate
-        <RefreshCw className="h-4 w-4 group-hover:animate-spin" />
-      </button>
-      <button
-        onClick={async () => {
-          saveCodeMutate();
-        }}
-        className="text-md mt-6 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
-      >
-        {!saveCodeLoading && (
-          <>
-            Use Password
-            <CircleCheckBig className="h-4 w-4" />
-          </>
-        )}
+      {!complete && (
+        <>
+          <button
+            className="text-md group mt-8 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
+            disabled={codeIsLoading}
+            onClick={async () => {
+              await codeRefetch();
+              toast.success("New password generated!", {
+                position: "bottom-center",
+              });
+            }}
+          >
+            Regenerate
+            <RefreshCw className="h-4 w-4 group-hover:animate-spin" />
+          </button>
+          <button
+            onClick={async () => {
+              saveCodeMutate();
+            }}
+            className="text-md mt-6 flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
+          >
+            {!saveCodeLoading && (
+              <>
+                Use Password
+                <CircleCheckBig className="h-4 w-4" />
+              </>
+            )}
 
-        {saveCodeLoading && (
-          <LoaderCircle className="h-6 w-6 animate-spin text-[#3a9aed]" />
-        )}
-      </button>
+            {saveCodeLoading && (
+              <LoaderCircle className="h-6 w-6 animate-spin text-[#3a9aed]" />
+            )}
+          </button>
+        </>
+      )}
+
+      {complete && (
+        <div className="flex flex-col items-center gap-3">
+          <h3 className="mt-4 text-center text-2xl text-[#77B9EE]">
+            Saved Password!
+          </h3>
+          <PartyPopper className="text-green-400" />
+        </div>
+      )}
     </div>
   );
 }

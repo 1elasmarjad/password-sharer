@@ -78,6 +78,9 @@ export const codes = createTable("code", {
     }),
   userId: text("user_id").notNull(),
   code: text("code").notNull(),
+  createdAt: int("created_at", { mode: "timestamp" })
+    .default(sql`(unixepoch())`)
+    .notNull(),
 });
 
 // export const friendsRelations = relations(friends, ({ one }) => ({

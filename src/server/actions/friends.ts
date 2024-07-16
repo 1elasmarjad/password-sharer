@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../db";
 import { friends } from "../db/schema";
 import { validateRequest } from "./auth";
@@ -31,6 +31,42 @@ export async function getMyFriends() {
   });
 
   return data;
+}
+
+export async function isFriend({
+  userId,
+  friendUserId,
+}: {
+  userId: string;
+  friendUserId: string;
+}) {
+  const data = await db.query.friends.findFirst({
+    where: and(eq(friends.userId, userId), eq(friends.friendId, friendUserId)),
+  });
+
+  return Boolean(data);
+}
+
+export async function addFriend({
+  userId,
+  friendUserId,
+}: {
+  userId: string;
+  friendUserId: string;
+}) {
+  if (await isFriend({ userId, friendUserId })) {
+    throw new Error("Already friends");
+  }
+
+  const resp = await db
+    .insert(friends)
+    .values({
+      userId: userId,
+      friendId: friendUserId,
+    })
+    .returning({ insertedId: friends.id });
+
+  return resp[0]?.insertedId;
 }
 
 export async function alertMyFriends({
