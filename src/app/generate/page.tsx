@@ -2,21 +2,23 @@
 
 import { LogIn } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import OTPBlock from "~/components/ui/password-block";
 import { validateRequest } from "~/server/actions/auth";
 
 export default async function GeneratePage() {
   const authContext = await validateRequest();
 
+  if (!authContext.user) {
+    redirect(`/login/google`);
+  }
+
   return (
     <main className="flex flex-col items-center">
       {authContext.user ? (
-        <>
-          <h1 className="my-12 text-xl text-gray-200">
-            Welcome {authContext.user.name}
-          </h1>
+        <div className="mt-24">
           <OTPBlock />
-        </>
+        </div>
       ) : (
         <div className="my-12 flex flex-col items-center gap-4 rounded bg-[#222222] px-16 py-12">
           <h1 className="text-xl text-gray-400">You Must Login</h1>

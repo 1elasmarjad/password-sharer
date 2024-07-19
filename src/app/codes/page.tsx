@@ -1,7 +1,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import HiddenCode from "~/components/ui/hidden-code";
 import SectionLayout from "~/components/ui/sectionlayout";
+import { validateRequest } from "~/server/actions/auth";
 import { myCodes } from "~/server/actions/codes";
 
 const PAGE_SIZE = 5;
@@ -13,6 +15,12 @@ export default async function CodesPage({
     page?: string;
   };
 }) {
+  const { user } = await validateRequest();
+
+  if (!user) {
+    redirect(`/login/google`);
+  }
+
   const page = Number(searchParams.page ?? 1);
 
   const allCodes = await myCodes({
@@ -26,7 +34,7 @@ export default async function CodesPage({
   return (
     <main className="flex flex-col">
       <SectionLayout>
-        <div className="my-6 flex w-full flex-col items-center gap-4">
+        <div className="mt-16 flex w-full flex-col items-center gap-4">
           {allCodes.data.map((code) => (
             <HiddenCode codeData={code} key={code.id} />
           ))}

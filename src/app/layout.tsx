@@ -39,9 +39,12 @@ export default async function RootLayout({
                 >
                   OneTime
                 </Link>
-                <ol className="flex max-w-64 grow justify-between text-gray-100">
+                <ol className="flex max-w-64 lg:max-w-96 grow justify-between text-gray-100">
                   <li>
                     <Link href="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link href="/codes">My Codes</Link>
                   </li>
                   <li>
                     <Link href="/generate">New Code</Link>
@@ -58,7 +61,7 @@ export default async function RootLayout({
                               src={user.avatar}
                               width={38}
                               height={38}
-                              alt={`${user.name}'s pfp`}
+                              alt={`${user.name}s pfp`}
                               className="rounded-full"
                             ></Image>
                           </button>
