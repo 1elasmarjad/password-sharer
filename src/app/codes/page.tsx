@@ -20,16 +20,8 @@ export default async function CodesPage({
     limit: PAGE_SIZE,
   });
 
-  let prevUrl = "";
-  let nextUrl = "";
-
-  if (allCodes.prevPageExists) {
-    prevUrl = `/codes?page=${page - 1}`;
-  }
-
-  if (allCodes.nextPageExists) {
-    nextUrl = `/codes?page=${page + 1}`;
-  }
+  const prevUrl = allCodes.prevPageExists ? `/codes?page=${page - 1}` : "";
+  const nextUrl = allCodes.nextPageExists ? `/codes?page=${page + 1}` : "";
 
   return (
     <main className="flex flex-col">
@@ -40,7 +32,7 @@ export default async function CodesPage({
           ))}
         </div>
 
-        <footer className="flex items-center justify-center gap-3 mt-12">
+        <footer className="mt-12 flex items-center justify-center gap-3">
           <Link
             href={prevUrl}
             className={`rounded-full p-1.5 font-bold text-gray-300 ${allCodes.prevPageExists ? "bg-[#77B9EE]" : "bg-[#4e789b] hover:cursor-default"}`}
