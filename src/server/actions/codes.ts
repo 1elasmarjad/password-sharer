@@ -1,6 +1,6 @@
 "use server";
 
-import { desc, eq, count as sqlcount } from "drizzle-orm";
+import { and, desc, eq, isNull, sql, count as sqlcount } from "drizzle-orm";
 import { db } from "../db";
 import { codes } from "../db/schema";
 import { validateRequest } from "./auth";
@@ -64,7 +64,7 @@ export async function myCodes({
       createdAt: true,
       userId: true,
     },
-    where: eq(codes.userId, user.id),
+    where: and(eq(codes.userId, user.id), isNull(codes.deletedAt)),
     limit: limit,
     offset: (page - 1) * limit,
     orderBy: desc(codes.createdAt),
@@ -73,7 +73,7 @@ export async function myCodes({
   const countResult = await db
     .select({ count: sqlcount() })
     .from(codes)
-    .where(eq(codes.userId, user.id));
+    .where(and(eq(codes.userId, user.id), isNull(codes.deletedAt)));
 
   const count = countResult[0]?.count ?? 0;
 
@@ -85,4 +85,17 @@ export async function myCodes({
     prevPageExists: page > 1,
     nextPageExists: page < maxPages,
   };
+}
+
+export async function deleteCode(id: string) {
+  const { user } = await validateRequest();
+
+  if (!user) {
+    throw new Error("Not authenticated");
+  }
+
+  await db
+    .update(codes)
+    .set({ deletedAt: sql`(unixepoch())` })
+    .where(eq(codes.id, id));
 }

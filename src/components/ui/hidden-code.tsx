@@ -1,10 +1,10 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { getCode } from "~/server/actions/codes";
+import { deleteCode, getCode } from "~/server/actions/codes";
 import { formatDistance } from "date-fns";
 
 export default function HiddenCode({
@@ -32,14 +32,32 @@ export default function HiddenCode({
     },
   });
 
+  const { isSuccess: isDeleted, mutate: deleteMutate } = useMutation({
+    mutationFn: async () => {
+      await deleteCode(codeData.id);
+      toast.success("Code deleted");
+    },
+  });
+
   if (visible) {
     return (
       <div className="flex h-24 w-full max-w-72 flex-col items-center justify-center gap-1 rounded-sm bg-[#444444] text-lg">
-        <span className="font-medium text-green-500">{data?.code}</span>
-        <span className="text-sm">
+        <span
+          className={`font-medium text-green-500 ${isDeleted && "line-through"}`}
+        >
+          {data?.code}
+        </span>
+        <span className="flex items-center gap-2 text-sm">
           {formatDistance(codeData.createdAt, new Date(), {
             addSuffix: true,
           }).replace("about ", "")}
+          <button
+            onClick={() => {
+              deleteMutate();
+            }}
+          >
+            {!isDeleted && <Trash size={16} className="text-red-400" />}
+          </button>
         </span>
       </div>
     );

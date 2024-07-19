@@ -81,6 +81,7 @@ export const codes = createTable("code", {
   createdAt: int("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
+  deletedAt: int("deleted_at", { mode: "timestamp" }),
 });
 
 // export const friendsRelations = relations(friends, ({ one }) => ({

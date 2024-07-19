@@ -39,15 +39,15 @@ export default async function RootLayout({
                 >
                   OneTime
                 </Link>
-                <ol className="flex max-w-64 lg:max-w-96 grow justify-between text-gray-100">
+                <ol className="flex max-w-64 grow justify-between text-gray-100 lg:max-w-96">
                   <li>
                     <Link href="/">Home</Link>
                   </li>
                   <li>
-                    <Link href="/codes">My Codes</Link>
+                    <Link href="/generate">New Code</Link>
                   </li>
                   <li>
-                    <Link href="/generate">New Code</Link>
+                    <Link href="/codes">My Codes</Link>
                   </li>
                 </ol>
                 <div className="max-w-24 grow">
@@ -58,7 +58,7 @@ export default async function RootLayout({
                           <button>
                             {/* TODO should become a dropdown */}
                             <Image
-                              src={user.avatar}
+                            src={user.avatar}
                               width={38}
                               height={38}
                               alt={`${user.name}s pfp`}
@@ -69,7 +69,12 @@ export default async function RootLayout({
                       )}
                     </>
                   ) : (
-                    <Link href="/login/google" className="flex items-center justify-center gap-2 rounded border-2 border-gray-700 px-6 py-1.5 text-md tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700">Login</Link>
+                    <Link
+                      href="/login/google"
+                      className="text-md flex items-center justify-center gap-2 rounded border-2 border-gray-700 px-6 py-1.5 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700"
+                    >
+                      Login
+                    </Link>
                   )}
                 </div>
               </nav>
