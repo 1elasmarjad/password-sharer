@@ -2,13 +2,21 @@ import Link from "next/link";
 import SectionLayout from "~/components/ui/sectionlayout";
 
 export default function HomePage() {
-
-  const customUrl = "/login/google?dest=%5Ctesting"
-
   return (
     <main className="flex flex-col">
       <SectionLayout>
-        <Link href={customUrl}>Test</Link>
+        <div className="mt-12 flex w-full flex-col items-center justify-center">
+          <h1 className="text-4xl font-semibold">Secure Your Screen-Time</h1>
+          <p className="mt-4 text-center text-gray-300">
+            Generate and save one-time passwords with your friends involved.
+          </p>
+          <Link
+            href="/generate"
+            className="mt-4 text-md group flex px-4 select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-[#77B9EE] transition-all hover:bg-gray-700 sm:text-lg"
+          >
+            Create Code
+          </Link>
+        </div>
       </SectionLayout>
     </main>
   );

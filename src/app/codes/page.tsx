@@ -37,9 +37,17 @@ export default async function CodesPage({
     <main className="flex flex-col">
       <SectionLayout>
         <div className="mt-16 flex w-full flex-col items-center gap-4">
-          {allCodes.data.map((code) => (
-            <HiddenCode codeData={code} key={code.id} />
-          ))}
+          {allCodes.data.length === 0 && (
+            <div className="text-center text-gray-300">
+              <h2 className="mb-3">No hidden codes found.</h2>
+              <Link href="/generate" className="text-md group flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-gray-300 transition-all hover:bg-gray-700 sm:text-lg">Create Code</Link>
+            </div>
+          )}
+
+          {allCodes.data.length > 0 &&
+            allCodes.data.map((code) => (
+              <HiddenCode codeData={code} key={code.id} />
+            ))}
         </div>
 
         <footer className="mt-12 flex items-center justify-center gap-3">
