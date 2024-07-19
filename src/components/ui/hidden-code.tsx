@@ -35,7 +35,7 @@ export default function HiddenCode({ codeId }: { codeId: string }) {
     <button
       onClick={() => mutate()}
       disabled={isPending}
-      className="flex h-8 w-full max-w-36 animate-pulse items-center justify-center rounded-md bg-[#444444]"
+      className="flex h-8 w-full max-w-36 animate-pulse items-center justify-center rounded-md bg-[#444444] text-[#77B9EE]"
     >
       {isPending ? <Loader2 className="animate-spin" /> : "Reveal Code"}
     </button>

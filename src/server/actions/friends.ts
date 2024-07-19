@@ -161,6 +161,11 @@ export async function sendSMSAlert({
   body: string;
   phoneNumber: string;
 }) {
+  if (env.NODE_ENV === "development") {
+    console.log(`SMS Alert: ${title}\n${body}`);
+    return;
+  }
+
   return await twilioClient.messages.create({
     body: `${title}\n${body}`,
     from: "+15855586497",
