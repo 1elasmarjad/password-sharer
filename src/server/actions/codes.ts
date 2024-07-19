@@ -1,6 +1,6 @@
 "use server";
 
-import { eq, type InferSelectModel, count as sqlcount } from "drizzle-orm";
+import { desc, eq, count as sqlcount } from "drizzle-orm";
 import { db } from "../db";
 import { codes } from "../db/schema";
 import { validateRequest } from "./auth";
@@ -43,7 +43,11 @@ export async function myCodes({
   page: number;
   limit: number;
 }): Promise<{
-  data: InferSelectModel<typeof codes>[];
+  data: {
+    id: string;
+    userId: string;
+    createdAt: Date;
+  }[];
   count: number;
   prevPageExists: boolean;
   nextPageExists: boolean;
@@ -55,9 +59,15 @@ export async function myCodes({
   }
 
   const data = await db.query.codes.findMany({
+    columns: {
+      id: true,
+      createdAt: true,
+      userId: true,
+    },
     where: eq(codes.userId, user.id),
     limit: limit,
     offset: (page - 1) * limit,
+    orderBy: desc(codes.createdAt),
   });
 
   const countResult = await db

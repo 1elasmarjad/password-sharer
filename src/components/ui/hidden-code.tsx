@@ -5,13 +5,22 @@ import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { getCode } from "~/server/actions/codes";
+import { formatDistance } from "date-fns";
 
-export default function HiddenCode({ codeId }: { codeId: string }) {
+export default function HiddenCode({
+  codeData,
+}: {
+  codeData: {
+    id: string;
+    userId: string;
+    createdAt: Date;
+  };
+}) {
   const [visible, setVisible] = useState<boolean>(false);
 
   const { data, mutate, isPending } = useMutation({
     mutationFn: async () => {
-      const code = await getCode(codeId);
+      const code = await getCode(codeData.id);
 
       if (!code) {
         toast.error("Code not found");
@@ -25,8 +34,13 @@ export default function HiddenCode({ codeId }: { codeId: string }) {
 
   if (visible) {
     return (
-      <div className="flex h-8 w-full max-w-36 items-center justify-center rounded-md bg-[#444444]">
-        {data?.code}
+      <div className="flex h-24 w-full max-w-72 flex-col items-center justify-center gap-1 rounded-sm bg-[#444444] text-lg">
+        <span className="font-medium text-green-500">{data?.code}</span>
+        <span className="text-sm">
+          {formatDistance(codeData.createdAt, new Date(), {
+            addSuffix: true,
+          }).replace("about ", "")}
+        </span>
       </div>
     );
   }
@@ -35,9 +49,16 @@ export default function HiddenCode({ codeId }: { codeId: string }) {
     <button
       onClick={() => mutate()}
       disabled={isPending}
-      className="flex h-8 w-full max-w-36 animate-pulse items-center justify-center rounded-md bg-[#444444] text-[#77B9EE]"
+      className="flex h-24 w-full max-w-72 flex-col items-center justify-center rounded-sm bg-[#444444] text-lg hover:bg-[#333333] hover:transition-all"
     >
-      {isPending ? <Loader2 className="animate-spin" /> : "Reveal Code"}
+      <span className="font-medium text-[#77B9EE]">
+        {isPending ? <Loader2 className="animate-spin" /> : "Reveal Code"}
+      </span>
+      <span className="text-sm">
+        {formatDistance(codeData.createdAt, new Date(), {
+          addSuffix: true,
+        }).replace("about ", "")}
+      </span>
     </button>
   );
 }

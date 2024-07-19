@@ -4,7 +4,7 @@ import HiddenCode from "~/components/ui/hidden-code";
 import SectionLayout from "~/components/ui/sectionlayout";
 import { myCodes } from "~/server/actions/codes";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 export default async function CodesPage({
   searchParams,
@@ -36,11 +36,11 @@ export default async function CodesPage({
       <SectionLayout>
         <div className="my-6 flex w-full flex-col items-center gap-4">
           {allCodes.data.map((code) => (
-            <HiddenCode codeId={code.id} key={code.id} />
+            <HiddenCode codeData={code} key={code.id} />
           ))}
         </div>
 
-        <footer className="flex items-center justify-center gap-3">
+        <footer className="flex items-center justify-center gap-3 mt-12">
           <Link
             href={prevUrl}
             className={`rounded-full p-1.5 font-bold text-gray-300 ${allCodes.prevPageExists ? "bg-[#77B9EE]" : "bg-[#4e789b] hover:cursor-default"}`}
