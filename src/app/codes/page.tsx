@@ -1,5 +1,3 @@
-export const dynamicParams = true;
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -40,7 +38,12 @@ export default async function CodesPage({
           {allCodes.data.length === 0 && (
             <div className="text-center text-gray-300">
               <h2 className="mb-3">No hidden codes found.</h2>
-              <Link href="/generate" className="text-md group flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-gray-300 transition-all hover:bg-gray-700 sm:text-lg">Create Code</Link>
+              <Link
+                href="/generate"
+                className="text-md group flex w-full select-none items-center justify-center gap-2 rounded border-2 border-gray-700 py-1 tracking-widest text-gray-300 transition-all hover:bg-gray-700 sm:text-lg"
+              >
+                Create Code
+              </Link>
             </div>
           )}
 

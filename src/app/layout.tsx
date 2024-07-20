@@ -47,7 +47,9 @@ export default async function RootLayout({
                     <Link href="/generate">New Code</Link>
                   </li>
                   <li>
-                    <Link href="/codes">My Codes</Link>
+                    <Link href="/codes" prefetch={false}>
+                      My Codes
+                    </Link>
                   </li>
                 </ol>
                 <div className="max-w-24 grow">
@@ -58,7 +60,7 @@ export default async function RootLayout({
                           <button>
                             {/* TODO should become a dropdown */}
                             <Image
-                            src={user.avatar}
+                              src={user.avatar}
                               width={38}
                               height={38}
                               alt={`${user.name}s pfp`}

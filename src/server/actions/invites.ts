@@ -1,5 +1,6 @@
 "use server";
 
+import { env } from "~/env";
 import { validateRequest } from "./auth";
 import { addFriend } from "./friends";
 import { fetchUser } from "./users";
@@ -11,8 +12,10 @@ export async function createFriendInvite() {
     throw new Error("Not authenticated");
   }
 
+  // this is not safe for production, but it's fine for this example
   return {
     id: `invite-${user.id}`,
+    link: env.INVITE_ACCEPT.replace("[inviteId]", `invite-${user.id}`),
   };
 }
 
