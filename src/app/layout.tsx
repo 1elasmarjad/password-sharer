@@ -5,7 +5,7 @@ import { type Metadata } from "next";
 import Providers from "./providers";
 import SectionLayout from "~/components/ui/sectionlayout";
 import Link from "next/link";
-import { logout, validateRequest } from "~/server/actions/auth";
+import { validateRequest } from "~/server/actions/auth";
 
 export const metadata: Metadata = {
   title: "One-Time Passwords",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 import { Montserrat } from "next/font/google";
-import Image from "next/image";
+import AvatarNavigation from "~/components/ui/avatar-navigation";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -40,36 +40,19 @@ export default async function RootLayout({
                   OneTime
                 </Link>
                 <ol className="flex max-w-64 grow justify-between text-gray-100 lg:max-w-96">
-                  <li>
+                  <li className="hidden sm:block">
                     <Link href="/">Home</Link>
                   </li>
-                  <li>
+                  <li className="hidden sm:block">
                     <Link href="/generate">New Code</Link>
                   </li>
-                  <li>
-                    <Link href="/codes" prefetch={false}>
-                      My Codes
-                    </Link>
+                  <li className="hidden sm:block">
+                    <a href="/codes">My Codes</a>
                   </li>
                 </ol>
-                <div className="max-w-24 grow">
+                <div className="max-w-24 grow justify-end flex">
                   {user ? (
-                    <>
-                      {user.avatar && (
-                        <form action={logout}>
-                          <button>
-                            {/* TODO should become a dropdown */}
-                            <Image
-                              src={user.avatar}
-                              width={38}
-                              height={38}
-                              alt={`${user.name}s pfp`}
-                              className="rounded-full"
-                            ></Image>
-                          </button>
-                        </form>
-                      )}
-                    </>
+                    <AvatarNavigation user={user} />
                   ) : (
                     <Link
                       href="/login/google"

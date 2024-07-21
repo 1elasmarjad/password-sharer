@@ -6,9 +6,11 @@ import toast from "react-hot-toast";
 export default function CopyButton({
   code,
   className,
+  size,
 }: {
   code: string;
   className?: string;
+  size?: number;
 }) {
   return (
     <button
@@ -20,7 +22,7 @@ export default function CopyButton({
         });
       }}
     >
-      <Copy className="select-none"/>
+      <Copy className="select-none" size={size}/>
     </button>
   );
 }
