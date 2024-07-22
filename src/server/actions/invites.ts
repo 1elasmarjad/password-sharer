@@ -55,3 +55,4 @@ export async function acceptFriendInvite({ inviteId }: { inviteId: string }) {
 
   return await addFriend({ userId: targetUserId, friendUserId: user.id });
 }
+

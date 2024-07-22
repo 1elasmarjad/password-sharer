@@ -168,7 +168,7 @@ export async function sendSMSAlert({
 
   return await twilioClient.messages.create({
     body: `${title}\n${body}`,
-    from: "+15855586497",
+    from: env.TWILIO_PHONE_NUMBER,
     to: phoneNumber,
   });
 }

@@ -1,11 +1,18 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { acceptFriendInvite } from "~/server/actions/invites";
 
-export default function AcceptInviteBlock({ inviteId }: { inviteId: string }) {
+export default function AcceptInviteBlock({
+  inviteId,
+  className,
+}: {
+  inviteId: string;
+  className?: string;
+}) {
   const router = useRouter();
 
   const { mutate, isPending } = useMutation({
@@ -22,10 +29,16 @@ export default function AcceptInviteBlock({ inviteId }: { inviteId: string }) {
   });
 
   return (
-    <div>
-      <button onClick={() => mutate()}>
-        {isPending ? "Accepting..." : "Accept Invite"}
+    <>
+      <button onClick={() => mutate()} className={className}>
+        {isPending ? (
+          <>
+            <Loader2 className="animate-spin my-0.5" size={16} />
+          </>
+        ) : (
+          "Accept Invite"
+        )}
       </button>
-    </div>
+    </>
   );
 }

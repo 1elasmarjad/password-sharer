@@ -6,7 +6,7 @@ export default function HomePage() {
     <main className="flex flex-col">
       <SectionLayout>
         <div className="mt-12 flex w-full flex-col items-center justify-center">
-          <h1 className="text-center text-4xl font-semibold">
+          <h1 className="text-center text-3xl sm:text-4xl font-semibold">
             Secure Your Screen-Time
           </h1>
           <p className="mt-4 text-center text-gray-300">

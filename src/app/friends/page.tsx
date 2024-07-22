@@ -6,7 +6,13 @@ import { getMyFriends } from "~/server/actions/friends";
 import { createFriendInvite } from "~/server/actions/invites";
 import Image from "next/image";
 
-export default async function Friends() {
+export default async function Friends({
+  searchParams,
+}: {
+  searchParams: {
+    focus?: string;
+  };
+}) {
   const { user } = await validateRequest();
 
   if (!user) {
@@ -14,15 +20,13 @@ export default async function Friends() {
   }
 
   const invite = await createFriendInvite();
-
   const friends = await getMyFriends();
 
   return (
     <SectionLayout>
+      <h1 className="my-4 text-center text-3xl font-semibold">Friends</h1>
 
-      <h1 className="text-3xl my-4 text-center font-semibold">Friends</h1>
-
-      <div className="flex flex-col w-full justify-center items-center">
+      <div className="flex w-full flex-col items-center justify-center">
         {friends.length === 0 && (
           <div className="text-center text-gray-300">
             <h2 className="mb-3">No friends found.</h2>
@@ -32,7 +36,7 @@ export default async function Friends() {
         {friends.length > 0 && (
           <div>
             {friends.map((friend) => (
-              <div key={friend.id} className="flex gap-4 items-center">
+                <div key={friend.id} className={`py-2 px-6 rounded-lg flex items-center gap-4 ${(friend.id === Number(searchParams.focus)) && "bg-green-900 bg-opacity-50"}`}>
                 <Image
                   src={friend.friend.avatar ?? ""}
                   alt={friend.friend.name}
