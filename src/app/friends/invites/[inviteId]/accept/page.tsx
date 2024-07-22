@@ -34,7 +34,7 @@ export default async function AcceptFriendInvite({
       <SectionLayout className="mt-12">
         <div className="flex flex-col items-center justify-center">
           <h2 className="mb-2 text-center text-2xl sm:text-4xl">
-            {targetUser.name} would like you to a code buddy
+            {targetUser.name} would like you to be a code buddy
           </h2>
           <p className="mb-8 text-center">
             This means you will be alerted when they generate or reveal codes.
