@@ -29,8 +29,22 @@ export default function AvatarNavigation({ user }: { user: User }) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
+          <Link href="/profile">My Profile</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem>
           <Link href="/friends">My Friends</Link>
         </DropdownMenuItem>
+
+        {/* <DropdownMenuItem> */}
+          {/* <button
+            onClick={() => {
+              doLogout();
+            }}
+          >
+            Logout
+          </button> */}
+        {/* </DropdownMenuItem> */}
 
         <DropdownMenuItem className="block sm:hidden">
           <Link href="/generate">New Code</Link>

@@ -9,10 +9,6 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     TURSO_AUTH_TOKEN: z.string(),
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
-    DISCORD_REDIRECT_URI: z.string(),
-    DISCORD_BOT_TOKEN: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
     GOOGLE_REDIRECT_URI: z.string(),
@@ -23,6 +19,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    ENCRYPTION_KEY: z.string(),
   },
 
   /**
@@ -41,10 +38,6 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN,
-    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-    DISCORD_REDIRECT_URI: process.env.DISCORD_REDIRECT_URI,
-    DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
@@ -53,6 +46,7 @@ export const env = createEnv({
     TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER,
     NODE_ENV: process.env.NODE_ENV,
     INVITE_ACCEPT: process.env.INVITE_ACCEPT,
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

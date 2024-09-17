@@ -5,6 +5,7 @@ import { db } from "../db";
 import { codes } from "../db/schema";
 import { validateRequest } from "./auth";
 import { alertMyFriends } from "./friends";
+import { decryptCode } from "./passwords";
 
 export async function getCode(id: string) {
   const { user } = await validateRequest();
@@ -32,6 +33,8 @@ export async function getCode(id: string) {
     title: `${user.name} Code Viewed`,
     body: `${user.name} has viewed a code`,
   });
+
+  data.code = await decryptCode(data.code);
 
   return data;
 }
