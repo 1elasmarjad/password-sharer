@@ -7,7 +7,7 @@ import { users } from "~/server/db/schema";
 export default function Profile() {
   return (
     <>
-      <SectionLayout>
+      {/* <SectionLayout>
         <form
           action={async (data: FormData) => {
             "use server";
@@ -27,7 +27,7 @@ export default function Profile() {
         >
           <ProfileForm />
         </form>
-      </SectionLayout>
+      </SectionLayout> */}
     </>
   );
 }
