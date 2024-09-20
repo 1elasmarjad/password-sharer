@@ -1,7 +1,7 @@
 // src/auth.ts
 import { Lucia } from "lucia";
 import { luciaAdapter } from "./server/db/index";
-import { Discord, Google } from "arctic";
+import { Google } from "arctic";
 import { env } from "./env";
 import { type users } from "./server/db/schema";
 import { type InferSelectModel } from "drizzle-orm";
@@ -32,14 +32,14 @@ declare module "lucia" {
   }
 }
 
-export const discord = new Discord(
-  env.DISCORD_CLIENT_ID,
-  env.DISCORD_CLIENT_SECRET,
-  env.DISCORD_REDIRECT_URI,
-);
+// export const discord = new Discord(
+//   env.DISCORD_CLIENT_ID,
+//   env.DISCORD_CLIENT_SECRET,
+//   env.DISCORD_REDIRECT_URI,
+// );
 
 export const google = new Google(
   env.GOOGLE_CLIENT_ID,
   env.GOOGLE_CLIENT_SECRET,
   env.GOOGLE_REDIRECT_URI,
-)
+);
