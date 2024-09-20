@@ -99,58 +99,58 @@ export async function alertMyFriends({
   }
 }
 
-export async function sendDiscordAlert({
-  title,
-  body,
-  discordId,
-}: {
-  title: string;
-  body: string;
-  discordId: string;
-}) {
-  const createDM = await fetch(
-    "https://discord.com/api/v10/users/@me/channels",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        recipient_id: discordId,
-      }),
-      headers: {
-        Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    },
-  );
+// export async function sendDiscordAlert({
+//   title,
+//   body,
+//   discordId,
+// }: {
+//   title: string;
+//   body: string;
+//   discordId: string;
+// }) {
+//   const createDM = await fetch(
+//     "https://discord.com/api/v10/users/@me/channels",
+//     {
+//       method: "POST",
+//       body: JSON.stringify({
+//         recipient_id: discordId,
+//       }),
+//       headers: {
+//         Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+//         "Content-Type": "application/json",
+//       },
+//     },
+//   );
 
-  const dmChannel = (await createDM.json()) as Channel;
+//   const dmChannel = (await createDM.json()) as Channel;
 
-  console.log(`DM Channel: ${dmChannel.id}, Status: ${createDM.status}`);
+//   console.log(`DM Channel: ${dmChannel.id}, Status: ${createDM.status}`);
 
-  const createMessage = await fetch(
-    `https://discord.com/api/v10/channels/${dmChannel.id}/messages`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        embeds: [
-          {
-            title,
-            description: body,
-          },
-        ],
-      }),
-      headers: {
-        Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    },
-  );
+//   const createMessage = await fetch(
+//     `https://discord.com/api/v10/channels/${dmChannel.id}/messages`,
+//     {
+//       method: "POST",
+//       body: JSON.stringify({
+//         embeds: [
+//           {
+//             title,
+//             description: body,
+//           },
+//         ],
+//       }),
+//       headers: {
+//         Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+//         "Content-Type": "application/json",
+//       },
+//     },
+//   );
 
-  const message = (await createMessage.json()) as Message;
+//   const message = (await createMessage.json()) as Message;
 
-  console.log(`Message: ${message.id}, Status: ${createMessage.status}`);
+//   console.log(`Message: ${message.id}, Status: ${createMessage.status}`);
 
-  return message;
-}
+//   return message;
+// }
 
 export async function sendSMSAlert({
   title,
